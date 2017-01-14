@@ -1,64 +1,95 @@
 #include "fillit.h"
 
-int main(int argc, char *argv[]) {
-  int fd;
-  (void) argc;
-  t_double_list *li;
-  char **array_final;
-  t_coordonne *coordonne_tetriminos;
+void display_array(char **array_final);
 
-  li = NULL;
-  coordonne_tetriminos = (t_coordonne*)malloc(sizeof(t_coordonne));
-  if ((fd = open_tetriminos_file(argv[1])) == (-1))
-  return (-1);
-  li = read_tetriminos_file(fd, li);
-  array_final = initialize_array_with_dots();
-  array_final = solution_tetriminos(li->begin, array_final, coordonne_tetriminos);
-  // display_solution(array_final);
-  return (0);
+int main(int argc, char *argv[])
+{
+	int fd;
+	char *buff;
+	char **array_final;
+	t_double_list *li;
+
+	li = NULL;
+	if (argc != 2)
+	{
+		ft_putstr("Usage: ./fillit <file>\n");
+		return (EXIT_FAILURE);
+	}
+	if ((fd = get_fd(argv[1])) == -1)
+		return (EXIT_FAILURE);
+	if ((buff = get_content_file(fd)) == NULL)
+		return (EXIT_FAILURE);
+	li = get_list_tetriminos(li, buff);
+	array_final = set_array_with_dots();
+	array_final = solution_tetriminos(li->begin, array_final);
+	display_array(array_final);
+	return (EXIT_SUCCESS);
 }
 
+void display_array(char **array_final)
+{
+	int 	line;
 
-int open_tetriminos_file(char *file) {
-  int fd;
-
-  // fd = open(file, O_RDONLY);
-  return (fd);
+	line = 0;
+	while(array_final[line])
+	{
+		ft_putstr(array_final[line]);
+		ft_putstr("\n");
+		line++;
+	}
 }
 
-t_double_list *read_tetriminos_file(int fd, t_double_list *li) {
-  char *buff;
+int get_fd(char *file)
+{
+	int fd;
 
-  if (!(buff = (char *) malloc(sizeof(char) * BUFF_SIZE + 1)))
-    return (NULL);
-  if ((read(fd, buff, BUFF_SIZE)) == (-1))
-    return (NULL);
-  li = get_list_tetriminos(li, buff);
-    return (li);
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		ft_putstr("File descriptor invalid\n");
+	return (fd);
 }
 
-char **initialize_array_with_dots() {
-  char **array_final;
-  int i = 0, j;
-  array_final = (char **) malloc(sizeof(char *) * 7);
-  while (i < 6) {
-    array_final[i] = (char *) malloc(sizeof(char) * 20 + 1);
-    j = 0;
-    while (j < 20)
-    {
-      array_final[i][j] = '.';
-      j++;
-    }
-    array_final[i][j] = '\0';
-    i++;
-  }
-  return array_final;
+char *get_content_file(int fd)
+{
+	char *buff;
+
+	if (!(buff = (char *) malloc(sizeof(char) * BUFF_SIZE + 1)))
+	{
+		ft_putstr("Problem malloc\n");
+		return (NULL);
+	}
+	if ((read(fd, buff, BUFF_SIZE)) == -1)
+	{
+		ft_putstr("Error during function read\n");
+		return (NULL);
+	}
+	return (buff);
 }
 
+char **set_array_with_dots()
+{
+	char **array_final;
 
-void initialize_struct_coordonne(t_coordonne *coordonne) {
-  coordonne->start_x = -1;
-  coordonne->end_x = -1;
-  coordonne->start_y = -1;
-  coordonne->end_y = -1;
+	int i = 0, j;
+	array_final = (char **) malloc(sizeof(char *) * 3);
+	while (i < 2) {
+		array_final[i] = (char *) malloc(sizeof(char) * 2 + 1);
+		j = 0;
+		while (j < 2)
+		{
+			array_final[i][j] = '.';
+			j++;
+		}
+		array_final[i][j] = '\0';
+		i++;
+	}
+	return array_final;
+}
+
+void initialize_struct_coordonne(t_tetriminos *tetris)
+{
+	tetris->start_x = -1;
+	tetris->end_x = -1;
+	tetris->start_y = -1;
+	tetris->end_y = -1;
 }

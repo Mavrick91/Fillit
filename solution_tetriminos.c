@@ -1,115 +1,103 @@
+#include <stdbool.h>
 #include "fillit.h"
 
-int dont_have_collision(char **array_final, struct s_tetriminos *tetris, t_coordonne *coordonne_tetriminos);
+int insert_tetris(char **array_final, t_tetriminos *tetris, int line_array, int column_array);
 
-char **solution_tetriminos(struct s_tetriminos *tetris, char **array_final, t_coordonne *coordonne_tetriminos) {
-  if (tetris == NULL)
-    return (array_final);
-  initialize_struct_coordonne(coordonne_tetriminos);
-  get_coordonne_tetriminos(tetris->tetriminos, &coordonne_tetriminos);
-  if (dont_have_collision(array_final, tetris, coordonne_tetriminos))
-    array_final = insert_tetriminos_in(array_final, tetris, coordonne_tetriminos);
-//  display_solution(array_final);
-  return solution_tetriminos(tetris->tetris_next, array_final, coordonne_tetriminos);
-}
+char **real_insert(char **array_final, t_tetriminos *tetris, int line_array, int column_array);
 
-int dont_have_collision(char **array_final, struct s_tetriminos *tetris, t_coordonne *coordonne_tetriminos) {
-  int line_array = 0, begin = 0;
-  int column_array;
-  int i, j;
-
-  column_array = begin;
-  while (array_final[line_array])
-  {
-    while(array_final[line_array][column_array])
-    {
-      i = coordonne_tetriminos->start_y;
-      while(i < coordonne_tetriminos->end_y)
-      {
-        j = coordonne_tetriminos->start_x;
-        column_array = begin;
-        while(j < coordonne_tetriminos->end_x)
-        {
-
-          if(array_final[line_array][column_array] != '.' && tetris->tetriminos[i][j] != '.')
-          {
-            line_array++;
-            column_array = begin;
-          } else {
-            j++;
-            column_array++;
-          }
-        }
-        i++;
-        line_array++;
-        if (i == coordonne_tetriminos->end_y)
-          return (1);
-        if (array_final[line_array] == NULL){
-          line_array = 0;
-          begin++;
-          column_array = begin;
-          i = coordonne_tetriminos->start_y;
-          j = coordonne_tetriminos->start_x;
-        }
-      }
-    }
-
-  }
-  return 0;
-}
-
-void get_coordonne_tetriminos(char **tetriminos, t_coordonne **coordonne_tetriminos) {
-  get_coordonne_start_x(tetriminos, coordonne_tetriminos);
-  get_coordonne_end_x(tetriminos, coordonne_tetriminos);
-  get_coordonne_start_y(tetriminos, coordonne_tetriminos);
-  get_coordonne_end_y(tetriminos, coordonne_tetriminos);
-}
-
-char **insert_tetriminos_in(char **array_final, struct s_tetriminos *tetriminos, t_coordonne *coordonne_tetriminos)
+char **solution_tetriminos(t_tetriminos *tetris, char **array_final)
 {
-  
-  int tetris_line;
-  int tetris_column;
-  int array_line;
-  int array_column;
-  char **array_tmp;
 
-  array_tmp = array_final;
-  tetris_line = coordonne_tetriminos->start_y;
-  array_line = 0;
-  while(tetris_line < coordonne_tetriminos->end_y)
-  {
-    tetris_column = coordonne_tetriminos->start_x;
-    array_column = 0;
-    while(tetris_column < coordonne_tetriminos->end_x)
-    {
-      while (array_final[array_line][array_column] != '.' && tetriminos->tetriminos[tetris_line][tetris_column] != '.') {
-        if (array_line == array_column || array_column > array_line)
-          array_line++;
-        else if (array_line > array_column)
-          array_column++;
-      }
-      if (array_final[array_line][array_column] == '.' && tetriminos->tetriminos[tetris_line][tetris_column] != '.')
-        array_final[array_line][array_column] = tetriminos->tetriminos[tetris_line][tetris_column];
-      else if (array_final[array_line][array_column] != '.' && tetriminos->tetriminos[tetris_line][tetris_column] != '.')
-        return (array_tmp);
-      tetris_column++;
-      array_column++;
-    }
-    tetris_line++;
-    array_line++;
-  }
-
-  return (array_final);
+	if (tetris == NULL)
+		return (array_final);
+	initialize_struct_coordonne(tetris);
+	get_coordonne_tetriminos(tetris);
+	if ((array_final = insert_tetriminos_in(array_final, tetris, 0, 0)) != NULL)
+		return solution_tetriminos(tetris->tetris_next, array_final);
 }
 
-void display_solution(char **array_final) {
-  int i = 0, j = 0;
-  for (i = 0; i < 5; i++) {
-    for (j = 0; j < 10; j++) {
-      printf("%c", array_final[i][j]);
-    }
-    printf("\n");
-  }
-  printf("\n\n");
+void get_coordonne_tetriminos(t_tetriminos *tetris)
+{
+	get_coordonne_start_x(&tetris);
+	get_coordonne_end_x(&tetris);
+	get_coordonne_start_y(&tetris);
+	get_coordonne_end_y(&tetris);
+}
+
+char **insert_tetriminos_in(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+{
+	int res;
+
+	if (!array_final[line_array])
+	{
+		array_final = expand_size_array(array_final);
+		return insert_tetriminos_in(array_final, tetris, 0, 0);
+	}
+	if (array_final[line_array][column_array] == '\0')
+		return insert_tetriminos_in(array_final, tetris, line_array + 1, 0);
+	res = insert_tetris(array_final, tetris, line_array, column_array);
+	if (res == 1)
+		return (real_insert(array_final, tetris, line_array, column_array));
+	else if (res == -2)
+	{
+		array_final = expand_size_array(array_final);
+		return insert_tetriminos_in(array_final, tetris, 0, 0);
+	}
+	else if (res == -1)
+		return insert_tetriminos_in(array_final, tetris, line_array, column_array + 1);
+	return (array_final);
+}
+
+char **real_insert(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+{
+	int 	line_tetris;
+	int 	column_tetris;
+	int 	tmp;
+
+	tmp = column_array;
+	line_tetris = tetris->start_y;
+	while (line_tetris < tetris->end_y)
+	{
+		column_tetris = tetris->start_x;
+		column_array = tmp;
+		while (column_tetris < tetris->end_x)
+		{
+			if (tetris->tetriminos[line_tetris][column_tetris] != '.')
+				array_final[line_array][column_array] = tetris->tetriminos[line_tetris][column_tetris];
+			column_tetris++;
+			column_array++;
+		}
+		line_tetris++;
+		line_array++;
+	}
+	return (array_final);
+}
+
+int insert_tetris(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+{
+	int 	column_tetris;
+	int 	line_tetris;
+	int 	tmp;
+
+	tmp = column_array;
+	line_tetris = tetris->start_y;
+	while (line_tetris < tetris->end_y)
+	{
+		column_tetris = tetris->start_x;
+		column_array = tmp;
+		while (column_tetris < tetris->end_x && array_final[line_array][column_array] && (column_array + (tetris->end_x - tetris->start_x)) != '\0')
+		{
+			if(tetris->tetriminos[line_tetris][column_tetris] != '.' && array_final[line_array][column_array] != '.')
+				return (-1);
+			column_tetris++;
+			column_array++;
+		}
+		line_tetris++;
+		line_array++;
+		if ((!array_final[line_array] && line_tetris < tetris->end_y))
+			return (-2);
+		if ((!array_final[line_array - 1][column_array] && column_tetris < tetris->end_x))
+			return (-1);
+	}
+	return (1);
 }

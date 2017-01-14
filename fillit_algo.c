@@ -12,7 +12,8 @@
 
 #include "fillit.h"
 
-t_double_list *change_hash_into_alpha(t_double_list *li) {
+t_double_list *change_hash_into_alpha(t_double_list *li)
+{
   int i;
   int j;
   char alpha;
@@ -20,11 +21,14 @@ t_double_list *change_hash_into_alpha(t_double_list *li) {
 
   tmp = li->begin;
   alpha = 'A';
-  while (tmp && alpha <= 'Z') {
+  while (tmp && alpha <= 'Z')
+  {
     i = 0;
-    while (tmp->tetriminos[i]) {
+    while (tmp->tetriminos[i])
+    {
       j = 0;
-      while (tmp->tetriminos[i][j]) {
+      while (tmp->tetriminos[i][j])
+      {
         tmp->tetriminos[i][j] = convert_hash(tmp, alpha, i, j);
         j++;
       }
@@ -36,7 +40,8 @@ t_double_list *change_hash_into_alpha(t_double_list *li) {
   return (li);
 }
 
-char convert_hash(t_tetriminos *tmp, char alpha, int i, int j) {
+char convert_hash(t_tetriminos *tmp, char alpha, int i, int j)
+{
   if (tmp->tetriminos[i][j] == '#')
     tmp->tetriminos[i][j] = alpha;
   return (tmp->tetriminos[i][j]);
