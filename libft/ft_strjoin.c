@@ -37,7 +37,7 @@ char *ft_strjoin(char const *s1, char const *s2) {
     return ((char *) s1);
   len_s1 = ft_strlen(s1);
   len_s2 = ft_strlen(s2);
-  if (!(str_both = (char *) malloc(sizeof(char) * (len_s1 + len_s2) + 1)))
+  if (!(str_both = malloc(sizeof(char) * (len_s1 + len_s2) + 1)))
     return (NULL);
   str_both = copy(str_both, (char *) s1, len_s1, j);
   j = len_s1;

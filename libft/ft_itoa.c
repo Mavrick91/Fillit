@@ -27,7 +27,7 @@ char *ft_itoa(int n) {
   if (n < 0)
     negatif = 1;
   total_number = ft_count_number(n);
-  if (!(tab = (char *) malloc(sizeof(char) * (total_number + 1))))
+  if (!(tab = malloc(sizeof(char) * (total_number + 1))))
     return (NULL);
   tab[total_number] = '\0';
   total_number--;

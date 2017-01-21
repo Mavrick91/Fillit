@@ -1,19 +1,13 @@
-#include <stdbool.h>
 #include "fillit.h"
 
-int insert_tetris(char **array_final, t_tetriminos *tetris, int line_array, int column_array);
-
-char **real_insert(char **array_final, t_tetriminos *tetris, int line_array, int column_array);
-
-char **solution_tetriminos(t_tetriminos *tetris, char **array_final)
+char **solution_tetriminos(t_tetriminos *tetris, char **array)
 {
-
 	if (tetris == NULL)
-		return (array_final);
+		return (array);
 	initialize_struct_coordonne(tetris);
 	get_coordonne_tetriminos(tetris);
-	if ((array_final = insert_tetriminos_in(array_final, tetris, 0, 0)) != NULL)
-		return solution_tetriminos(tetris->tetris_next, array_final);
+	array = complete_array(tetris, array, 0, 0);
+	return solution_tetriminos(tetris->tetris_next, array);
 }
 
 void get_coordonne_tetriminos(t_tetriminos *tetris)
@@ -24,79 +18,79 @@ void get_coordonne_tetriminos(t_tetriminos *tetris)
 	get_coordonne_end_y(&tetris);
 }
 
-char **insert_tetriminos_in(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+char **complete_array(t_tetriminos *tetris, char **array, int line, int column)
 {
 	int res;
 
-	if (!array_final[line_array])
+	if (!array[line])
 	{
-		array_final = expand_size_array(array_final);
-		return insert_tetriminos_in(array_final, tetris, 0, 0);
+		array = expand_size_array(array);
+		return complete_array(tetris, array, 0, 0);
 	}
-	if (array_final[line_array][column_array] == '\0')
-		return insert_tetriminos_in(array_final, tetris, line_array + 1, 0);
-	res = insert_tetris(array_final, tetris, line_array, column_array);
+	if (array[line][column] == '\0')
+		return complete_array(tetris, array, line + 1, 0);
+	res = check_collision(array, tetris, line, column);
 	if (res == 1)
-		return (real_insert(array_final, tetris, line_array, column_array));
+		return (insert_tetris(array, tetris, line, column));
 	else if (res == -2)
 	{
-		array_final = expand_size_array(array_final);
-		return insert_tetriminos_in(array_final, tetris, 0, 0);
+		array = expand_size_array(array);
+		return complete_array(tetris, array, 0, 0);
 	}
 	else if (res == -1)
-		return insert_tetriminos_in(array_final, tetris, line_array, column_array + 1);
-	return (array_final);
+		return complete_array(tetris, array, line, column + 1);
+	return (array);
 }
 
-char **real_insert(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+char **insert_tetris(char **array, t_tetriminos *tetris, int i, int j)
 {
-	int 	line_tetris;
-	int 	column_tetris;
+	int 	k;
+	int 	l;
 	int 	tmp;
 
-	tmp = column_array;
-	line_tetris = tetris->start_y;
-	while (line_tetris < tetris->end_y)
+	tmp = j;
+	k = tetris->start_y;
+	while (k < tetris->end_y)
 	{
-		column_tetris = tetris->start_x;
-		column_array = tmp;
-		while (column_tetris < tetris->end_x)
+		l = tetris->start_x;
+		j = tmp;
+		while (l < tetris->end_x)
 		{
-			if (tetris->tetriminos[line_tetris][column_tetris] != '.')
-				array_final[line_array][column_array] = tetris->tetriminos[line_tetris][column_tetris];
-			column_tetris++;
-			column_array++;
+			if (tetris->tetriminos[k][l] != '.')
+				array[i][j] = tetris->tetriminos[k][l];
+			l++;
+			j++;
 		}
-		line_tetris++;
-		line_array++;
+		k++;
+		i++;
 	}
-	return (array_final);
+	return (array);
 }
 
-int insert_tetris(char **array_final, t_tetriminos *tetris, int line_array, int column_array)
+int check_collision(char **array, t_tetriminos *tetris, int i, int j)
 {
-	int 	column_tetris;
-	int 	line_tetris;
+	int 	k;
+	int 	l;
 	int 	tmp;
 
-	tmp = column_array;
-	line_tetris = tetris->start_y;
-	while (line_tetris < tetris->end_y)
+	tmp = j;
+	l = tetris->start_y;
+	while (l < tetris->end_y)
 	{
-		column_tetris = tetris->start_x;
-		column_array = tmp;
-		while (column_tetris < tetris->end_x && array_final[line_array][column_array] && (column_array + (tetris->end_x - tetris->start_x)) != '\0')
+		k = tetris->start_x;
+		j = tmp;
+		while (k < tetris->end_x && array[i][j])
 		{
-			if(tetris->tetriminos[line_tetris][column_tetris] != '.' && array_final[line_array][column_array] != '.')
+			if(tetris->tetriminos[l][k] != '.' && array[i][j] != '.')
 				return (-1);
-			column_tetris++;
-			column_array++;
+			k++;
+			j++;
 		}
-		line_tetris++;
-		line_array++;
-		if ((!array_final[line_array] && line_tetris < tetris->end_y))
+		l++;
+		i++;
+		if ((!array[i] && l < tetris->end_y))
 			return (-2);
-		if ((!array_final[line_array - 1][column_array] && column_tetris < tetris->end_x))
+		if ((!array[i - 1][j] && k < tetris->end_x))
 			return (-1);
 	}
 	return (1);

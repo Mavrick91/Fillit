@@ -13,32 +13,32 @@
 
 # include "Libft/libft.h"
 
-typedef struct        s_tetriminos
+typedef struct        	s_tetriminos
 {
-  char                **tetriminos;
-	int             		start_x;
-	int           			end_x;
-	int           			start_y;
-	int           			end_y;
-  struct s_tetriminos *tetris_next;
-  struct s_tetriminos *tetris_prev;
-}                     t_tetriminos;
+  char                	**tetriminos;
+	int             			start_x;
+	int           				end_x;
+	int           				start_y;
+	int           				end_y;
+  struct s_tetriminos 	*tetris_next;
+  struct s_tetriminos 	*tetris_prev;
+}                     	t_tetriminos;
 
-typedef struct s_double_list
+typedef struct 					s_double_list
 {
-  struct s_tetriminos *begin;
-  struct s_tetriminos *end;
-} t_double_list;
+  struct s_tetriminos 	*begin;
+  struct s_tetriminos 	*end;
+} 											t_double_list;
+
 
 /*------------   MAIN.C   ------------*/
 int								get_fd(char *file);
 char 							*get_content_file(int fd);
-char 							**set_array_with_dots();
-void 							initialize_struct_coordonne(t_tetriminos *tetris);
 
 /*------------   TETRIMINOS_UTILS.C   ------------*/
-t_double_list 		*get_list_tetriminos(t_double_list *li, char *buff);
-t_double_list 		*push_tetriminos_to(t_double_list *li, char **array_tetriminos, int tmp);
+t_double_list 		*get_list_tetriminos(char *buff);
+t_double_list 		*push_tetriminos_to(t_double_list *li, char **array_tetriminos,
+																	 int tmp);
 char 							**split_array_tetriminos(char **array_tmp, char **array_tetriminos, int tmp);
 
 /*------------   LIST_UTILS.C   ------------*/
@@ -49,22 +49,55 @@ t_double_list 		*change_hash_into_alpha(t_double_list *li);
 char 							convert_hash(t_tetriminos *tmp, char alpha, int i, int j);
 
 /*------------   COORDONNE_START_END_X_TETRIMINOS.C   ------------*/
-void get_coordonne_start_x(t_tetriminos **tetris);
-void get_coordonne_end_x(t_tetriminos **tetris);
+void 							get_coordonne_start_x(t_tetriminos **tetris);
+void 							get_coordonne_end_x(t_tetriminos **tetris);
 int								is_column_contain_letter(char **tetriminos, int column);
 
 /*------------   COORDONNE_START_END_Y_TETRIMINOS.C   ------------*/
-void get_coordonne_start_y(t_tetriminos **tetris);
-void get_coordonne_end_y(t_tetriminos **tetris);
+void 							get_coordonne_start_y(t_tetriminos **tetris);
+void 							get_coordonne_end_y(t_tetriminos **tetris);
 int 							is_line_contain_letter(char **tetriminos, int line);
 
 /*------------   SOLUTION_TETRIMINOS.C   ------------*/
-char **solution_tetriminos(struct s_tetriminos *tetris, char **array_final);
-void get_coordonne_tetriminos(t_tetriminos *tetris);
-char **insert_tetriminos_in(char **array_final, t_tetriminos *tetriminos, int line_array, int column_array);
+char 							**solution_tetriminos(struct s_tetriminos *tetris,
+																				char **array);
+void 							get_coordonne_tetriminos(t_tetriminos *tetris);
+char 							**complete_array(t_tetriminos *tetriminos, char **array, int line, int column);
+int 							check_collision(char **array, t_tetriminos *tetris, int i, int j);
+char 							**insert_tetris(char **array, t_tetriminos *tetris, int i, int j);
 
 /*------------   EXPAND_ARRAY.C   ------------*/
 char 							**expand_size_array(char **array_final);
 char 							*fill_in_row(int size);
+
+/*------------   PERMUTATION_TETRIMINOS.C   ------------*/
+char 							**get_solution(t_tetriminos *tetris);
+int 							get_total_tetriminos(t_tetriminos *tetris);
+char 							**permute_algo(t_tetriminos *tetris, int l, int r,
+																 char **array);
+void 							swap_tetriminos(t_tetriminos *x, t_tetriminos *y);
+t_tetriminos 			*move_in(t_tetriminos *tetris, int l);
+
+/*------------   DISPLAY.C   ------------*/
+void 							display_array(char **array);
+
+/*------------   FREE_UTILS.C   ------------*/
+void 							free_list(t_double_list *li);
+void 							free_array(char **array_tmp);
+
+/*------------   SET_ARRAY.C   ------------*/
+char 							**set_array_with_dots();
+
+/*------------   INITIALIZE_STRUCT.C   ------------*/
+char 							**set_array_with_dots();
+void 							initialize_struct_coordonne(t_tetriminos *tetris);
+
+/*------------   VALID_FILE.C   ------------*/
+int 							valid_file(char *buff);
+int 							scan_buff(char *buff);
+char 							*get_tetriminos(char *buff, int start, int end);
+int 							error_file();
+int 							tetriminos_valid(char *tetriminos);
+
 
 #endif

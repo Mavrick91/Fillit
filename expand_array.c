@@ -1,28 +1,28 @@
 #include "fillit.h"
 
-char **copy_array_final(char **array_final, char **tmp_array);
+char **copy_array_final(char **array_final, char **array_tmp);
 
 char **expand_size_array(char **array_final)
 {
-	int 	i;
-	int 	j;
-	char 	**tmp_array;
+	int i;
+	int j;
+	char **array_tmp;
 
 	i = 0;
 	while (array_final[i])
 		i++;
 	j = i + 1;
 	i = 0;
-	tmp_array = (char **) malloc(sizeof(char *) * j);
+	array_tmp = malloc(sizeof(char *) * (j + 1));
 	while (i < j)
 	{
-		tmp_array[i] = (char *) malloc(sizeof(char) * j + 1);
-		tmp_array[i] = fill_in_row(j);
+		array_tmp[i] = fill_in_row(j);
 		i++;
 	}
-	tmp_array[i] = NULL;
-	tmp_array = copy_array_final(array_final, tmp_array);
-	return (tmp_array);
+	array_tmp[i]= NULL;
+	array_tmp = copy_array_final(array_final, array_tmp);
+	free_array(array_final);
+	return array_tmp;
 }
 
 char *fill_in_row(int size)
@@ -31,7 +31,7 @@ char *fill_in_row(int size)
 	char	*tmp_row;
 	i = 0;
 
-	tmp_row = (char*)malloc(sizeof(char) * size + 1);
+	tmp_row = malloc(sizeof(char) * (size + 2));
 	while (i < size)
 	{
 		tmp_row[i] = '.';
@@ -41,7 +41,7 @@ char *fill_in_row(int size)
 	return tmp_row;
 }
 
-char **copy_array_final(char **array_final, char **tmp_array)
+char **copy_array_final(char **array_final, char **array_tmp)
 {
 	int 	i;
 	int 	j;
@@ -52,10 +52,10 @@ char **copy_array_final(char **array_final, char **tmp_array)
 		j = 0;
 		while (array_final[i][j])
 		{
-			tmp_array[i][j] = array_final[i][j];
+			array_tmp[i][j] = array_final[i][j];
 			j++;
 		}
 		i++;
 	}
-	return tmp_array;
+	return array_tmp;
 }

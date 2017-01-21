@@ -1,2 +1,4 @@
 a.out
-.vscode/
+.idea/
+CMakeLists.txt
+cmake-build-debug/

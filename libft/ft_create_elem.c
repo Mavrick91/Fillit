@@ -16,7 +16,7 @@ t_list *ft_create_elem(void *content) {
   t_list *new_elem;
 
   new_elem = NULL;
-  if (!(new_elem = (t_list *) malloc(sizeof(t_list))))
+  if (!(new_elem = malloc(sizeof(t_list))))
     return (NULL);
   if (new_elem) {
     new_elem->content = content;
