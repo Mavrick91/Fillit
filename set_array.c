@@ -2,22 +2,22 @@
 
 char **set_array_with_dots()
 {
-	char **array_final;
+	char **array;
 
 	int i = 0, j;
-	array_final = malloc(sizeof(char *) * 2);
-	while (i < 1)
+	array = malloc(sizeof(char *) * 3);
+	while (i < 2)
 	{
-		array_final[i] = malloc(sizeof(char) * 1 + 1);
+		array[i] = malloc(sizeof(char) * 2 + 1);
 		j = 0;
-		while (j < 1)
+		while (j < 2)
 		{
-			array_final[i][j] = '.';
+			array[i][j] = '.';
 			j++;
 		}
-		array_final[i][j] = '\0';
+		array[i][j] = '\0';
 		i++;
 	}
-	array_final[i] = NULL;
-	return array_final;
+	array[i] = NULL;
+	return array;
 }

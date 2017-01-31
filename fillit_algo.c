@@ -14,35 +14,35 @@
 
 t_double_list *change_hash_into_alpha(t_double_list *li)
 {
-  int i;
-  int j;
-  char alpha;
-  t_tetriminos *tmp;
+	int i;
+	int j;
+	char alpha;
+	t_tetriminos *tmp;
 
-  tmp = li->begin;
-  alpha = 'A';
-  while (tmp && alpha <= 'Z')
-  {
-    i = 0;
-    while (tmp->tetriminos[i])
-    {
-      j = 0;
-      while (tmp->tetriminos[i][j])
-      {
-        tmp->tetriminos[i][j] = convert_hash(tmp, alpha, i, j);
-        j++;
-      }
-      i++;
-    }
-    alpha++;
-    tmp = tmp->tetris_next;
-  }
-  return (li);
+	tmp = li->begin;
+	alpha = 'A';
+	while (tmp && alpha <= 'Z')
+	{
+		i = 0;
+		while (tmp->tetriminos[i])
+		{
+			j = 0;
+			while (tmp->tetriminos[i][j])
+			{
+				tmp->tetriminos[i][j] = convert_hash(tmp, alpha, i, j);
+				j++;
+			}
+			i++;
+		}
+		alpha++;
+		tmp = tmp->tetris_next;
+	}
+	return (li);
 }
 
 char convert_hash(t_tetriminos *tmp, char alpha, int i, int j)
 {
-  if (tmp->tetriminos[i][j] == '#')
-    tmp->tetriminos[i][j] = alpha;
-  return (tmp->tetriminos[i][j]);
+	if (tmp->tetriminos[i][j] == '#')
+		tmp->tetriminos[i][j] = alpha;
+	return (tmp->tetriminos[i][j]);
 }

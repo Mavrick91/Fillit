@@ -3,6 +3,8 @@
 
 int how_many(char character, char *tetriminos);
 
+int is_good_piece(char *tetriminos, int index, int hashtag);
+
 int valid_file(char *buff)
 {
 	if (buff == NULL)
@@ -66,8 +68,25 @@ int tetriminos_valid(char *tetriminos)
 		free(tetriminos);
 		return (-1);
 	}
+
 	free(tetriminos);
 	return (1);
+}
+
+int is_good_piece(char *tetriminos, int index, int hashtag)
+{
+	if (tetriminos[index] == '\0')
+		return (0);
+	if (hashtag == 4)
+		return (1);
+	if (tetriminos[index] != '#' && hashtag > 0)
+		return is_good_piece(tetriminos, index + 3, hashtag);
+	if (tetriminos[index] != '#')
+		return is_good_piece(tetriminos, index + 1, hashtag);
+	if (tetriminos[index] == '#')
+		if (is_good_piece(tetriminos, index + 1, hashtag + 1))
+			return (1);
+	return (0);
 }
 
 int how_many(char character, char *tetriminos)
