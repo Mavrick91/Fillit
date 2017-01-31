@@ -21,3 +21,24 @@ char **set_array_with_dots()
 	array[i] = NULL;
 	return array;
 }
+
+char **set_array_full_dots(char **array)
+{
+	int line;
+	int column;
+
+	line = 0;
+	while (array[line])
+	{
+		column = 0;
+		while (array[line][column])
+		{
+			array[line][column] = '.';
+			column++;
+		}
+		array[line][column] = '\0';
+		line++;
+	}
+	array[line] = NULL;
+	return array;
+}

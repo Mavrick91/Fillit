@@ -12,35 +12,33 @@
 
 # define BUFF_SIZE 1024
 
-typedef struct s_tetriminos
+typedef struct 					s_tetriminos
 {
-	char **tetriminos;
-	int start_x;
-	int end_x;
-	int start_y;
-	int end_y;
-	struct s_tetriminos *tetris_next;
-	struct s_tetriminos *tetris_prev;
-} t_tetriminos;
+	char 									**tetriminos;
+	int										start_x;
+	int										end_x;
+	int										start_y;
+	int										end_y;
+	struct s_tetriminos 	*tetris_next;
+	struct s_tetriminos 	*tetris_prev;
+} 											t_tetriminos;
 
-typedef struct s_double_list
+typedef struct 					s_double_list
 {
-	struct s_tetriminos *begin;
-	struct s_tetriminos *end;
-} t_double_list;
+	struct s_tetriminos 	*begin;
+	struct s_tetriminos 	*end;
+} 											t_double_list;
 
 
 /*------------   MAIN.C   ------------*/
-int get_fd(char *file);
-char *get_content_file(int fd);
+int 					get_fd(char *file);
+char 					*get_content_file(int fd);
 
 /*------------   TETRIMINOS_UTILS.C   ------------*/
 t_double_list *get_list_tetriminos(char *buff);
-t_double_list *
-push_tetriminos_to(t_double_list *li, char **array_tetriminos, int tmp);
+t_double_list *push_tetriminos_to(t_double_list *li, char **array, int tmp);
 
-char **
-split_array_tetriminos(char **array_tmp, char **array_tetriminos, int tmp);
+char **split_array_tetriminos(char **array_tmp, char **array_tetris, int tmp);
 
 /*------------   LIST_UTILS.C   ------------*/
 t_double_list *push_back_dlist(t_double_list *li, char **data);
@@ -61,14 +59,13 @@ void get_coordonne_end_y(t_tetriminos **tetris);
 int is_line_contain_letter(char **tetriminos, int line);
 
 /*------------   SOLUTION_TETRIMINOS.C   ------------*/
-char **
-solution_tetriminos(t_tetriminos *tetris, char **array, int line, int column);
-void get_coordonne_tetriminos(t_tetriminos *tetris);
+char **backtracking(t_tetriminos *tetris, char **array, int line, int column);
+int get_size_array(char **array);
+char **complete_array(char **array, t_tetriminos *tetris, int line, int column);
+int check_collision(char **array, t_tetriminos *tetris, int line, int column);
 
-char **
-complete_array(char **array, t_tetriminos *tetriminos, int line, int column);
-int check_collision(char **array, t_tetriminos *tetris, int line_array, int column_array);
-char **insert_tetris(char **array, t_tetriminos *tetris, int i, int j);
+/*------------   COORDONNE_TETRIMINOS.C   ------------*/
+void get_coordonne_tetriminos(t_tetriminos *tetris);
 
 /*------------   EXPAND_ARRAY.C   ------------*/
 char **expand_array(int size);
@@ -86,6 +83,7 @@ void free_array(char **array_tmp);
 
 /*------------   SET_ARRAY.C   ------------*/
 char **set_array_with_dots();
+char **set_array_full_dots(char **array);
 
 /*------------   INITIALIZE_STRUCT.C   ------------*/
 char **set_array_with_dots();
@@ -98,10 +96,14 @@ int scan_buff(char *buff);
 char *get_tetriminos(char *buff, int start, int end);
 int error_file();
 int tetriminos_valid(char *tetriminos);
+int how_many(char character, char *tetriminos);
 
 /*------------   REMOVE_TETRIS.C   ------------*/
 char **remove_tetris(char **array, t_tetriminos *tetris);
 char get_letter(t_tetriminos *tetris);
 char **remove_letter(char letter, char **array);
+
+/*------------   INSERT_TETRIS.C   ------------*/
+char **insert_tetris(char **array, t_tetriminos *tetris, int i, int j);
 
 #endif
