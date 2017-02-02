@@ -85,17 +85,18 @@ void free_array(char **array_tmp);
 char **set_array_with_dots();
 char **set_array_full_dots(char **array);
 
-/*------------   INITIALIZE_STRUCT.C   ------------*/
-char **set_array_with_dots();
+/*------------   INITIALIZation.C   ------------*/
 void initialize_struct_coordonne(t_tetriminos *tetris);
+int 	*initialize_array_position();
+
 
 /*------------   VALID_FILE.C   ------------*/
-int valid_file(char *buff);
+int is_valid(char *buff);
 int scan_buff(char *buff);
 
 char *get_tetriminos(char *buff, int start, int end);
 int error_file();
-int tetriminos_valid(char *tetriminos);
+int tetriminos_valid(char *tetris);
 int how_many(char character, char *tetriminos);
 
 /*------------   REMOVE_TETRIS.C   ------------*/
@@ -105,5 +106,24 @@ char **remove_letter(char letter, char **array);
 
 /*------------   INSERT_TETRIS.C   ------------*/
 char **insert_tetris(char **array, t_tetriminos *tetris, int i, int j);
+
+/*------------   CHECK_ISOLATED_TETRIS.C   ------------*/
+
+/*------------   CHECK_ISOLATED_TETRIS.C   ------------*/
+int is_good_piece(char *tetris);
+
+/*------------   CHECK__ISOLATED_TETRIS.C   ------------*/
+void add_to_array_position(int **array_position, int *index);
+int array_contains(int *index, int **buffer, int j);
+
+/*------------   CHECK__MOVE_IN_TETRIS.C   ------------*/
+int move_right(char **tetris, int *index);
+int move_bottom(char **tetris, int *index);
+int move_left(char **tetris, int *index);
+
+/*------------   CHECK__VALIDATION_PIECE.C   ------------*/
+int 	get_first_hashtag(char *tetris);
+void 	inspect_piece(char **tetris, int *index, int **buffer, int *hashtag);
+
 
 #endif

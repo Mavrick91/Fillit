@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if ((buff = get_content_file(fd)) == NULL)
 		return (EXIT_FAILURE);
-	if ((valid_file(buff)) != 1)
+	if ((is_valid(buff)) != 1)
 		return (EXIT_FAILURE);
 	li = get_list_tetriminos(buff);
 	free(buff);
@@ -31,7 +31,7 @@ int get_fd(char *file)
 {
 	int fd;
 
-	fd = open("/Users/mdu12/Documents/school42/Fillit/tetriminos.txt", O_RDONLY);
+	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		ft_putstr("File descriptor invalid\n");
 	return (fd);

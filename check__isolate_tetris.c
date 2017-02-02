@@ -1,16 +1,13 @@
-#include <stdbool.h>
 #include "fillit.h"
 
-int valid_file(char *buff)
+int is_valid(char *buff)
 {
 	if (buff == NULL)
 		return (-1);
-	if ((scan_buff(buff)) == -1)
-	{
-		free(buff);
-		return error_file();
-	}
-	return (1);
+	if ((scan_buff(buff)) == 1)
+		return (1);
+	free(buff);
+	return error_file();
 }
 
 int error_file()
@@ -35,7 +32,7 @@ int scan_buff(char *buff)
 			return (-1);
 		index += 21;
 	}
-	return false;
+	return 1;
 }
 
 char *get_tetriminos(char *buff, int start, int end)
@@ -44,8 +41,9 @@ char *get_tetriminos(char *buff, int start, int end)
 	int index;
 
 	index = 0;
-	if ((tetriminos = malloc(sizeof(char) * 21)) == NULL)
+	if ((tetriminos = malloc(sizeof(char) * 22)) == NULL)
 		return (NULL);
+	ft_memset(tetriminos, 0, 22);
 	while (start < end)
 	{
 		tetriminos[index] = buff[start];
