@@ -11,7 +11,6 @@ char **backtracking(t_tetriminos *tetris, char **array, int line, int column)
 	array_tmp = complete_array(array, tetris_tmp, line, column);
 	if (array_tmp != NULL)
 		return array;
-	array = set_array_full_dots(array);
 	if (array[line] == NULL)
 	{
 		free_array(array);
@@ -42,7 +41,7 @@ char **complete_array(char **array, t_tetriminos *tetris, int line, int column)
 		return NULL;
 	initialize_struct_coordonne(tetris);
 	get_coordonne_tetriminos(tetris);
-	if (check_collision(array, tetris, line, column) == -1 && array[line] != NULL)
+	if (check_collision(array, tetris, line, column) == -1)
 	{
 		if (array[line][column] == '\0')
 			return complete_array(array, tetris, line + 1, 0);
