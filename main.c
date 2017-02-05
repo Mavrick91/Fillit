@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if ((buff = get_content_file(fd)) == NULL)
 		return (EXIT_FAILURE);
-	if ((is_valid(buff)) != 1)
+	if ((is_a_valid_file(buff)) != 1)
 		return (EXIT_FAILURE);
 	li = get_list_tetriminos(buff);
 	free(buff);

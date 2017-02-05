@@ -91,7 +91,7 @@ int 	*initialize_array_position();
 
 
 /*------------   VALID_FILE.C   ------------*/
-int is_valid(char *buff);
+int is_a_valid_file(char *buff);
 int scan_buff(char *buff);
 
 char *get_tetriminos(char *buff, int start, int end);

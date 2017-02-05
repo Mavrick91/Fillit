@@ -2,7 +2,7 @@
 
 int is_tetriminos_valid(char *buff);
 
-int is_valid(char *buff)
+int is_a_valid_file(char *buff)
 {
 	if (buff == NULL)
 		return (-1);

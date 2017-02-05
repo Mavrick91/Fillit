@@ -19,7 +19,7 @@ SRCS			=     check__scan_buff.c \
                       main.c \
                       permutation_tetriminos.c \
                       remove_tetris.c \
-                      set_array.c \
+                      set_array_with_dots.c \
                       solution_tetriminos.c \
                       utils_free.c \
                       utils_list.c \

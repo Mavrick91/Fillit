@@ -1,11 +1,10 @@
 #include "fillit.h"
 
-char **
-backtracking(t_tetriminos *tetris, char **array, int line, int column)
+char **backtracking(t_tetriminos *tetris, char **array, int line, int column)
 {
-	t_tetriminos *tetris_tmp;
-	int size_array;
-	char **array_tmp;
+	t_tetriminos 	*tetris_tmp;
+	int 					size_array;
+	char 					**array_tmp;
 
 	tetris_tmp = tetris;
 	size_array = get_size_array(array);
@@ -13,7 +12,7 @@ backtracking(t_tetriminos *tetris, char **array, int line, int column)
 	if (array_tmp != NULL)
 		return array;
 	array = set_array_full_dots(array);
-	if (array[line][column] != '\0')
+	if (array[line] == NULL)
 	{
 		free_array(array);
 		array = expand_array(size_array + 1);
