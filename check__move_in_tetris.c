@@ -21,3 +21,10 @@ int move_left(char **tetris, int *index)
 		return 1;
 	return 0;
 }
+
+int move_top(char **tetris, int *index)
+{
+	if ((*tetris)[*index -5] == '#')
+		return 1;
+	return 0;
+}

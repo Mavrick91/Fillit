@@ -3,7 +3,7 @@
 int tetriminos_valid(char *tetris)
 {
 	if ((how_many('#', tetris)) != 4 || (how_many('.', tetris)) != 12 ||
-			(how_many('\n', tetris)) != 4 || is_good_piece(tetris) == -1)
+			(how_many('\n', tetris)) != 3 || is_good_piece(tetris) == -1)
 	{
 		free(tetris);
 		return (-1);
@@ -69,6 +69,14 @@ void inspect_piece(char **tetris, int *index, int **buffer, int *nb_hashtag)
 	else if (move_left(tetris, index))
 	{
 		*index -= 1;
+		if (!array_contains(index, buffer, 0)){
+			*nb_hashtag += 1;
+			add_to_array_position(buffer, index);
+		}
+	}
+	else if (move_top(tetris, index))
+	{
+		*index -= 5;
 		if (!array_contains(index, buffer, 0)){
 			*nb_hashtag += 1;
 			add_to_array_position(buffer, index);

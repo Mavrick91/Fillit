@@ -120,6 +120,7 @@ int array_contains(int *index, int **buffer, int j);
 int move_right(char **tetris, int *index);
 int move_bottom(char **tetris, int *index);
 int move_left(char **tetris, int *index);
+int move_top(char **tetris, int *index);
 
 /*------------   CHECK__VALIDATION_PIECE.C   ------------*/
 int 	get_first_hashtag(char *tetris);

@@ -14,9 +14,9 @@ int 	*initialize_array_position()
 
 	if ((array = malloc(sizeof(int) * 5)) == NULL)
 		return (NULL);
-	array[0] = 0;
-	array[1] = 0;
-	array[2] = 0;
-	array[3] = 0;
+	array[0] = -1;
+	array[1] = -1;
+	array[2] = -1;
+	array[3] = -1;
 	return array;
 }
